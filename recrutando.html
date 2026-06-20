@@ -49,24 +49,24 @@
 
     <script>
         // --- EDITE OS DADOS AQUI ---
-        // Você pode trocar 'clan_logo_url' pelo link da imagem de cada clã
+        // Exemplo: 'furia.png', 'espartanos.png', etc.
         const clans = [
             { id: "1° Starter", nome: "Fúria", pontos: "150k", img: "furia.png", link: "#" },
             { id: "2° Starter", nome: "Espartanos", pontos: "200k", img: "espartanos.png", link: "#" },
             { id: "3° Starter", nome: "Justiça", pontos: "150k", img: "justica.png", link: "#" },
-            { id: "4° Starter", nome: "Ostentação", pontos: "150k", img: "furia.png", link: "#" },
-            { id: "5° Starter", nome: "Destroyer$", pontos: "125k", img: "furia.png", link: "#" },
-            { id: "6° Starter", nome: "Demon of Darkness", pontos: "100k", img: "furia.png", link: "#" },
-            { id: "7° Starter", nome: "BR", pontos: "100k", img: "furia.png", link: "#" },
-            { id: "8° Starter", nome: "Ratinhos", pontos: "75k", img: "furia.png", link: "#" },
-            { id: "9° Starter", nome: "(CSTI) Titãs", pontos: "50k", img: "furia.png", link: "#" }
+            { id: "4° Starter", nome: "Ostentação", pontos: "150k", img: "ostentacao.png", link: "#" },
+            { id: "5° Starter", nome: "Destroyer$", pontos: "125k", img: "destroyer.png", link: "#" },
+            { id: "6° Starter", nome: "Demon of Darkness", pontos: "100k", img: "demon.png", link: "#" },
+            { id: "7° Starter", nome: "BR", pontos: "100k", img: "br.png", link: "#" },
+            { id: "8° Starter", nome: "Ratinhos", pontos: "75k", img: "ratinhos.png", link: "#" },
+            { id: "9° Starter", nome: "(CSTI) Titãs", pontos: "50k", img: "titas.png", link: "#" }
         ];
 
         const container = document.getElementById('clan-container');
         clans.forEach(clan => {
             container.innerHTML += `
                 <div class="clan-card border border-blue-900/50 p-5 rounded-2xl flex flex-col items-center text-center shadow-lg">
-                    <img src="${clan.img}" alt="Logo" class="w-24 h-16 rounded-full mb-3 border-2 border-yellow-500/50 object-cover">
+                    <img src="${clan.img}" alt="${clan.nome}" class="w-24 h-24 rounded-full mb-4 border-2 border-yellow-500/50 object-cover" onerror="this.src='https://placehold.co/100x100/1e293b/yellow?text=${clan.nome}'">
                     <div class="text-yellow-400 font-bold text-sm uppercase">${clan.id}</div>
                     <div class="text-white font-bold text-lg mb-2">${clan.nome}</div>
                     <div class="bg-blue-600/80 px-3 py-1 rounded-full text-xs font-bold mb-4">${clan.pontos}</div>
