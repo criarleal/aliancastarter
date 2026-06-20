@@ -48,29 +48,34 @@
     </div>
 
     <script>
-        // --- EDITE OS DADOS AQUI ---
-        // Exemplo: 'furia.png', 'espartanos.png', etc.
+        const phone = "5519984306048";
+
         const clans = [
-            { id: "1° Starter", nome: "Fúria", pontos: "150k", img: "furia.png", link: "#" },
-            { id: "2° Starter", nome: "Espartanos", pontos: "200k", img: "espartanos.png", link: "#" },
-            { id: "3° Starter", nome: "Justiça", pontos: "150k", img: "justica.png", link: "#" },
-            { id: "4° Starter", nome: "Ostentação", pontos: "150k", img: "ostentacao.png", link: "#" },
-            { id: "5° Starter", nome: "Destroyer$", pontos: "125k", img: "destroyer.png", link: "#" },
-            { id: "6° Starter", nome: "Demon of Darkness", pontos: "100k", img: "demon.png", link: "#" },
-            { id: "7° Starter", nome: "BR", pontos: "100k", img: "br.png", link: "#" },
-            { id: "8° Starter", nome: "Ratinhos", pontos: "75k", img: "ratinhos.png", link: "#" },
-            { id: "9° Starter", nome: "(CSTI) Titãs", pontos: "50k", img: "titas.png", link: "#" }
+            { id: "1° Starter", nome: "Fúria", pontos: "150k", img: "furia.png" },
+            { id: "2° Starter", nome: "Espartanos", pontos: "200k", img: "espartanos.png" },
+            { id: "3° Starter", nome: "Justiça", pontos: "150k", img: "justica.png" },
+            { id: "4° Starter", nome: "Ostentação", pontos: "150k", img: "ostentacao.png" },
+            { id: "5° Starter", nome: "Destroyer$", pontos: "125k", img: "destroyer.png" },
+            { id: "6° Starter", nome: "Demon of Darkness", pontos: "100k", img: "demon.png" },
+            { id: "7° Starter", nome: "BR", pontos: "100k", img: "br.png" },
+            { id: "8° Starter", nome: "Ratinhos", pontos: "75k", img: "ratinhos.png" },
+            { id: "9° Starter", nome: "(CSTI) Titãs", pontos: "50k", img: "titas.png" }
         ];
 
         const container = document.getElementById('clan-container');
+        
         clans.forEach(clan => {
+            // Cria a mensagem personalizada codificada para URL
+            const mensagem = encodeURIComponent(`Olá! Gostaria de saber se tem vaga no clã ${clan.id} ${clan.nome}.`);
+            const whatsappLink = `https://wa.me/${phone}?text=${mensagem}`;
+
             container.innerHTML += `
                 <div class="clan-card border border-blue-900/50 p-5 rounded-2xl flex flex-col items-center text-center shadow-lg">
                     <img src="${clan.img}" alt="${clan.nome}" class="w-24 h-24 rounded-full mb-4 border-2 border-yellow-500/50 object-cover" onerror="this.src='https://placehold.co/100x100/1e293b/yellow?text=${clan.nome}'">
                     <div class="text-yellow-400 font-bold text-sm uppercase">${clan.id}</div>
                     <div class="text-white font-bold text-lg mb-2">${clan.nome}</div>
                     <div class="bg-blue-600/80 px-3 py-1 rounded-full text-xs font-bold mb-4">${clan.pontos}</div>
-                    <a href="${clan.link}" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-2 rounded-lg text-sm transition uppercase">Entrar</a>
+                    <a href="${whatsappLink}" target="_blank" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-2 rounded-lg text-sm transition uppercase">Entrar</a>
                 </div>
             `;
         });
