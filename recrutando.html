@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recrutamento Aliança Starter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            background-image: url('https://comunidadestarter.com/var/assets/img/media/iW=5000&iH=any/1d44b30854f12381c3b767faf92dd72e/press-kits-raid-3.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white; 
+            font-family: 'Segoe UI', sans-serif; 
+        }
+        .overlay { background: rgba(15, 23, 42, 0.9); min-height: 100vh; }
+        .clan-card { transition: transform 0.2s; background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(4px); }
+        .clan-card:hover { transform: scale(1.03); }
+    </style>
+</head>
+<body>
+    <div class="overlay p-4 md:p-8">
+        <div class="max-w-5xl mx-auto">
+            <!-- Header -->
+            <header class="text-center mb-12">
+                <img src="https://simp6.cuckcapital.cr/images4/image4ba7634086d87eaa.png" alt="Logo Aliança" class="w-32 h-32 mx-auto mb-6 rounded-full border-4 border-yellow-400 shadow-xl object-cover" onerror="this.src='https://placehold.co/128x128/1e293b/ffffff?text=Logo'">
+                <h1 class="text-4xl font-bold text-yellow-400 mb-2">🔥 ALIANÇA STARTER 🔥</h1>
+                <p class="text-gray-300">Escolha seu clã e faça parte da nossa jornada!</p>
+            </header>
+
+            <!-- Container de Clãs -->
+            <div id="clan-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-16">
+                <!-- Os clãs serão inseridos aqui pelo JavaScript -->
+            </div>
+
+            <!-- Requisitos -->
+            <section class="bg-gray-900/80 p-8 rounded-2xl border border-gray-700 shadow-2xl">
+                <h2 class="text-2xl font-bold mb-6 text-blue-300">📋 Requisitos Obrigatórios:</h2>
+                <div class="grid md:grid-cols-2 gap-4 text-gray-200">
+                    <p>✔️ CB prioridade Ultra</p>
+                    <p>✔️ Hidra: usar as 3 🔑</p>
+                    <p>✔️ Quimera: usar as 2 🔑</p>
+                    <p>✔️ Participar do grupo do WhatsApp</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // --- EDITE OS DADOS AQUI ---
+        // Você pode trocar 'clan_logo_url' pelo link da imagem de cada clã
+        const clans = [
+            { id: "1° Starter", nome: "Fúria", pontos: "150k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" },
+            { id: "2° Starter", nome: "Espartanos", pontos: "200k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" },
+            { id: "3° Starter", nome: "Justiça", pontos: "150k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" },
+            { id: "4° Starter", nome: "Ostentação", pontos: "150k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" },
+            { id: "5° Starter", nome: "Destroyer$", pontos: "125k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" },
+            { id: "6° Starter", nome: "Demon of Darkness", pontos: "100k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" },
+            { id: "7° Starter", nome: "BR", pontos: "100k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" },
+            { id: "8° Starter", nome: "Ratinhos", pontos: "75k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" },
+            { id: "9° Starter", nome: "(CSTI) Titãs", pontos: "50k", img: "https://placehold.co/100x100/1e293b/yellow?text=CLÃ", link: "#" }
+        ];
+
+        const container = document.getElementById('clan-container');
+        clans.forEach(clan => {
+            container.innerHTML += `
+                <div class="clan-card border border-blue-900/50 p-5 rounded-2xl flex flex-col items-center text-center shadow-lg">
+                    <img src="${clan.img}" alt="Logo" class="w-16 h-16 rounded-full mb-3 border-2 border-yellow-500/50 object-cover">
+                    <div class="text-yellow-400 font-bold text-sm uppercase">${clan.id}</div>
+                    <div class="text-white font-bold text-lg mb-2">${clan.nome}</div>
+                    <div class="bg-blue-600/80 px-3 py-1 rounded-full text-xs font-bold mb-4">${clan.pontos}</div>
+                    <a href="${clan.link}" class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-2 rounded-lg text-sm transition uppercase">Entrar</a>
+                </div>
+            `;
+        });
+    </script>
+</body>
+</html>
