@@ -1,1 +1,859 @@
-<doc></doc>
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>COMUNIDADE STARTER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --ink: #0d0d10;
+      --surface: #111117;
+      --card: #18181f;
+      --border: #2a2a36;
+      --gold: #f5c518;
+      --gold-glow: rgba(245, 197, 24, 0.20);
+      --crimson: #8b1a1a;
+      --muted: #6b6b82;
+      --text: #d4d4e0;
+      --white: #f0f0f5;
+      --radius: 8px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--ink);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER / NAV ────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 72px;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .logo img {
+      height: 58px;
+      width: auto;
+      display: block;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: .85rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+
+    nav a:hover {
+      color: var(--gold);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .65rem 1.4rem;
+      border-radius: var(--radius);
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: .9rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--ink);
+      box-shadow: 0 0 20px var(--gold-glow);
+    }
+
+    .btn-gold:hover {
+      box-shadow: 0 0 32px rgba(245, 197, 24, .45);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1.5px solid var(--gold);
+    }
+
+    .btn-outline:hover {
+      background: var(--gold-glow);
+    }
+
+    /* ── HERO ────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: calc(100svh - 52px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 5%;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .hero-bg img,
+    .hero-bg video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(.35) saturate(.8);
+      display: block;
+    }
+
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 20%, rgba(139, 26, 26, .30) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 50% 80%, rgba(245, 197, 24, .12) 0%, transparent 60%);
+    }
+
+    .hero>*:not(.hero-bg) {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: .8rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--border);
+      padding: .35rem 1.1rem;
+      border-radius: 99px;
+      margin-bottom: 2rem;
+      background: rgba(245, 197, 24, .08);
+      margin-top: 0;
+    }
+
+    .hero-logo {
+      width: auto;
+      height: clamp(128px, 22vw, 256px);
+      object-fit: contain;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 0 28px rgba(245, 197, 24, .35));
+      margin-top: -62px;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.8rem, 8vw, 7rem);
+      font-weight: 900;
+      line-height: .95;
+      letter-spacing: -.01em;
+      color: var(--white);
+      margin-bottom: 2.5rem;
+    }
+
+    .hero h1 span {
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.5rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--crimson);
+      letter-spacing: .06em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 0 auto 2.5rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.75;
+    }
+
+    .hero-scroll-arrow {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .hero-scroll-arrow a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 2px solid rgba(245, 197, 24, 0.5);
+      border-radius: 50%;
+      color: var(--gold);
+      text-decoration: none;
+      animation: bounce 2s ease-in-out infinite;
+      transition: border-color .3s, background .3s;
+    }
+
+    .hero-scroll-arrow a:hover {
+      border-color: var(--gold);
+      background: rgba(245, 197, 24, 0.1);
+    }
+
+    .hero-scroll-arrow svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--gold);
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(8px);
+      }
+    }
+
+    /* ── DIVIDER ─────────────────────────────────────────── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0 5% 3rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider-diamond {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      transform: rotate(45deg);
+    }
+
+    /* ── SECTIONS ─────────────────────────────────────────── */
+    section {
+      padding: 6rem 5%;
+    }
+
+    .section-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: .78rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .section-title span {
+      color: var(--gold);
+    }
+
+    .section-body {
+      max-width: 640px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── ABOUT ───────────────────────────────────────────── */
+    .about {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .about-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 1rem;
+      font-size: .97rem;
+    }
+
+    .about-actions {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .about-video {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 197, 24, 0.1);
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .about-video:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6), 0 0 35px rgba(245, 197, 24, 0.2);
+    }
+
+    .about-video iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ── CLANS ───────────────────────────────────────────── */
+    .clans {
+      background: #000;
+    }
+
+    .clans-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .clans-header .section-body {
+      margin: 0 auto;
+    }
+
+    .clans-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .clan-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform .25s, border-color .25s;
+      aspect-ratio: 1;
+    }
+
+    .clan-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold);
+    }
+
+    .clan-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: saturate(.8);
+      transition: filter .25s;
+    }
+
+    .clan-card:hover img {
+      filter: saturate(1.2);
+    }
+
+    .clans-actions {
+      text-align: center;
+      margin-top: 3rem;
+    }
+
+
+
+    /* ── STRATEGY ────────────────────────────────────────── */
+    .strategy {
+      background: linear-gradient(rgba(13, 13, 16, 0.88), rgba(13, 13, 16, 0.88)), url('https://comunidadestarter.com/var/assets/img/media/iW=5000&iH=any/1d44b30854f12381c3b767faf92dd72e/press-kits-raid-3.jpg') center/cover no-repeat;
+      border-top: 1px solid var(--border);
+    }
+
+    .strategy-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 4rem;
+    }
+
+    .strategy-header .section-body {
+      margin: 0 auto;
+    }
+
+    /* benefits row */
+    .strategy-benefits {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto 4rem;
+    }
+
+    .benefit-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: transform .25s, border-color .25s;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold);
+    }
+
+    .benefit-card h4 {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gold);
+      line-height: 1.3;
+      margin-bottom: .8rem;
+    }
+
+    .benefit-card p {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* functionality divider */
+    .strategy-divider {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .strategy-divider::before,
+    .strategy-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .strategy-divider span {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: .75rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* functionality grid */
+    .strategy-func {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      max-width: 1100px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .strategy-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      border-left: 3px solid var(--gold);
+      transition: background .2s;
+    }
+
+    .strategy-item:hover {
+      background: #1e1e28;
+    }
+
+    .strategy-item h4 {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--white);
+      letter-spacing: .05em;
+      margin-bottom: .4rem;
+    }
+
+    .strategy-item p {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .strategy-cta {
+      text-align: center;
+    }
+
+
+
+    /* ── CTA ─────────────────────────────────────────────── */
+    .cta-section {
+      background:
+        linear-gradient(rgba(13, 13, 16, 0.97), rgba(13, 13, 16, 0.97)),
+        url('https://comunidadestarter.com/var/assets/img/media/original/533e3eb9e9b995727ff750e8d1659dbb/press-kits-raid-11.jpg') center/cover no-repeat;
+      text-align: center;
+      padding: 7rem 5%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(245, 197, 24, .09) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section .section-title {
+      margin-bottom: 1rem;
+    }
+
+    .cta-section .section-body {
+      margin: 0 auto 2.5rem;
+      text-align: center;
+    }
+
+    .cta-section .btn {
+      font-size: 1rem;
+      padding: .9rem 2rem;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 2rem 5%;
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 768px) {
+
+      .about-inner {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .clans-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .strategy-benefits,
+      .strategy-func {
+        grid-template-columns: 1fr;
+      }
+
+      header nav {
+        display: none;
+      }
+    }
+
+    /* ── GOLD LINE ACCENT ────────────────────────────────── */
+    .gold-line {
+      display: block;
+      width: 48px;
+      height: 3px;
+      background: var(--gold);
+      margin-bottom: 1.5rem;
+      border-radius: 2px;
+    }
+
+    .gold-line-center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── HEADER ──────────────────────────────────────── -->
+  <header>
+    <a href="#" class="logo">
+      <img
+        src="https://comunidadestarter.com/var/assets/img/media/iW=526&iH=526&oX=24&oY=178&cW=478&cH=172/1a2939cb536d7947eb6beac3172c5a1a/Sem-t-tulo-13-6-.png"
+        alt="Comunidade Starter">
+    </a>
+    <nav>
+      <a href="#sobre">Sobre</a>&nbsp;&nbsp;&nbsp;
+      <a href="#clas">Clãs</a>&nbsp;&nbsp;&nbsp;
+      <a href="#estrategias">Estratégias</a>&nbsp;&nbsp;&nbsp;
+      <a href="#entrar" class="btn btn-gold" style="padding:.5rem 1.1rem;font-size:.82rem;">Entrar na Comunidade</a>
+    </nav>
+  </header>
+
+  <!-- ── HERO ────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-bg">
+      <video autoplay loop muted playsinline>
+        <source src="https://criarleal.github.io/aliancastarter/hero.mp4" type="video/mp4">
+      </video>
+    </div>
+    <img
+      src="https://comunidadestarter.com/var/assets/img/media/iW=5000&iH=any/e9ab0b36de1521a7441ff154b864d48b/Sem-t-tulo-12-1-.png"
+      alt="Comunidade Starter" class="hero-logo">
+    <span class="hero-eyebrow">Raid: Shadow Legends</span>
+    <h1>BEM-VINDOS A<br><span>COMUNIDADE STARTER</span></h1>
+    <div class="hero-scroll-arrow">
+      <a href="#sobre" aria-label="Rolar para baixo">
+        <svg viewBox="0 0 24 24">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ────────────────────────────────────────── -->
+  <section class="about" id="sobre">
+    <div class="about-inner">
+      <div class="about-text">
+        <span class="section-label">Quem somos</span>
+        <span class="gold-line"></span>
+        <h2 class="section-title">Comunidade<br>STARTER</h2>
+        <p>A Comunidade nasceu para ajudar jogadores a evoluírem com foco em cooperação, orientação estratégica,
+          progressão eficiente e fortalecimento dos clãs em um ambiente respeitoso.</p>
+        <div class="about-actions">
+          <a href="https://chat.whatsapp.com/JCm0hwl741BKVTs4mNBylQ?s=sh&p=a&mlu=1&amv=1" class="btn btn-gold"
+            target="_blank">Seja um membro</a>
+        </div>
+      </div>
+      <div class="about-video">
+        <iframe width="1217" height="693" src="https://www.youtube.com/embed/2Q1uCzosFw4"
+          title="This is RAID: Shadow Legends" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STRATEGY ──────────────────────────────────────── -->
+  <section class="strategy" id="estrategias">
+
+    <!-- Camada de Impacto -->
+    <div class="strategy-header">
+      <span class="section-label">Evolua com quem joga junto de verdade</span>
+      <span class="gold-line gold-line-center"></span>
+      <h2 class="section-title">JUNTE-SE À COMUNIDADE <span>STARTER</span></h2>
+    </div>
+
+    <!-- Divisor -->
+    <div class="strategy-divider">
+      <span>Como funciona</span>
+    </div>
+
+    <!-- Camada de Funcionalidade -->
+    <div class="strategy-func">
+      <div class="strategy-item">
+        <h4>Cadastro estratégico das contas</h4>
+        <p>Cada jogador registra informações importantes da sua conta, isso permite orientar melhor builds, composições
+          e prioridades de evolução.</p>
+      </div>
+      <div class="strategy-item">
+        <h4>Divisão equilibrada de poder entre clãs</h4>
+        <p>Os jogadores são distribuídos conforme experiência, nível de progressão e capacidade de dano em boss,
+          garantindo um crescimento equilibrado e competitivo.</p>
+      </div>
+      <div class="strategy-item">
+        <h4>Mapeamento de rotas de ataque</h4>
+        <p>Organizamos previamente a ordem de ataques e alvos prioritários para aumentar a eficiência em guerras e
+          eventos de clã.</p>
+      </div>
+      <div class="strategy-item">
+        <h4>Planejamento estratégico de ataques coordenados</h4>
+        <p>Definimos momentos ideais para ataques com o objetivo de maximizar recompensas coletivas.</p>
+      </div>
+      <div class="strategy-item">
+        <h4>Distribuição organizada de recompensas</h4>
+        <p>A comunidade orienta como priorizar energia, fragmentos, livros e equipamentos, ensinando cada jogador onde
+          investir melhor seus recursos.</p>
+      </div>
+      <div class="strategy-item">
+        <h4>Acompanhamento de evolução dos jogadores</h4>
+        <p>Administradores monitoram o progresso semanal, metas individuais e desempenho em conteúdos-chave para
+          permitir ajustes rápidos nas estratégias.</p>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ── CLANS ────────────────────────────────────────── -->
+  <section class="clans" id="clas">
+    <div class="clans-header">
+      <span class="section-label">Nossos Clãs</span>
+      <span class="gold-line gold-line-center"></span>
+      <h2 class="section-title">CONHEÇA NOSSOS CLÃS</h2>
+      <p>Aqui, cada membro encontra espaço para aprender, compartilhar experiências e crescer
+        dentro do jogo.</p>
+    </div>
+    <div class="clans-grid">
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/a722ddbe1df7c61eab397ec503eeedb5/Sem-t-tulo-3-6-.png"
+          alt="Clã 1" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/dc1fbd37d6b04634b5919fd2d8af4f7e/Sem-t-tulo-4-1-.png"
+          alt="Clã 2" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/3806fb023e220637b4d754a04119a9ed/Sem-t-tulo-8-3-.png"
+          alt="Clã 3" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/ea1866d5f61550b358612c34ed6085d1/Sem-t-tulo-2-6-.png"
+          alt="Clã 4" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/975cafb21310c886d8280ebc2d2dbd27/Sem-t-tulo-5-11-.png"
+          alt="Clã 5" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/0dd3bd93c9280e502c943a1895f37e43/Sem-t-tulo-10-3-.png"
+          alt="Clã 6" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/c6a5818124f37b9911b715f1aacc6162/Sem-t-tulo-1-2-.png"
+          alt="Clã 7" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/2cd91ae04bcd95952e9f7a3d1214515f/Sem-t-tulo-7-1-.png"
+          alt="Clã 8" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/9888536c9fba50335ab5ad393384635a/Sem-t-tulo-11-1-.png"
+          alt="Clã 9" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/7caa3cc68b33df8915955e7116b9018c/Sem-t-tulo-6.png"
+          alt="Clã 10" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/64df119c3435d340f2783a21a97d379a/Sem-t-tulo-9-3-.png"
+          alt="Clã 11" onerror="this.style.display='none'">
+      </div>
+      <div class="clan-card">
+        <img
+          src="https://comunidadestarter.com/var/assets/img/media/original/9092b5315bac65fd85acaa0d1ce5988a/Sem-t-tulo---13-de-mar-o-de-2026-s-21-56-39-12-1-.png"
+          alt="Clã 12" onerror="this.style.display='none'">
+      </div>
+    </div>
+    <div class="clans-actions">
+      <a href="https://chat.whatsapp.com/JCm0hwl741BKVTs4mNBylQ?s=sh&p=a&mlu=1&amv=1" class="btn btn-gold"
+        target="_blank">Estou buscando um clã</a>
+    </div>
+  </section>
+
+
+  <!-- ── CTA ──────────────────────────────────────────── -->
+  <section class="cta-section" id="entrar">
+    <span class="section-label">Entre agora</span>
+    <span class="gold-line gold-line-center"></span>
+    <h2 class="section-title"><span>Mais do que um grupo</span><br>UMA COMUNIDADE QUE CRESCE<br>TODOS OS DIAS!</h2>
+    <p class="section-body">A Comunidade Starter nasceu para ajudar jogadores a evoluírem com orientação estratégica,
+      ambiente respeitoso e suporte coletivo. Aqui, ninguém joga sozinho.</p>
+    <a href="https://chat.whatsapp.com/JCm0hwl741BKVTs4mNBylQ?s=sh&p=a&mlu=1&amv=1" class="btn btn-gold"
+      target="_blank">⚔ ENTRAR NA COMUNIDADE STARTER</a>
+  </section>
+
+  <!-- ── FOOTER ───────────────────────────────────────── -->
+  <footer>
+    <p>Copyright © 2026 | Todos os direitos reservados</p>
+  </footer>
+
+</body>
+
+</html>
