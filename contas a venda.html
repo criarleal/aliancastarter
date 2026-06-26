@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="imgs/favicon.png" type="image/x-icon">
+    <title>COMUNIDADE STARTER | Contas à Venda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="api.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        inter: ['Inter', 'sans-serif'],
+                        rajdhani: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            gold: '#f5c518',
+                            orange: '#8b1a1a',
+                            dark: '#0d0d10',
+                            card: '#18181f',
+                            border: '#2a2a36',
+                            muted: '#6b6b82',
+                            text: '#d4d4e0',
+                            white: '#f0f0f5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* ── TOKENS ─────────────────────────────────────────── */
+        :root {
+          --ink: #0d0d10;
+          --surface: #111117;
+          --card: #18181f;
+          --border: #2a2a36;
+          --gold: #f5c518;
+          --gold-glow: rgba(245, 197, 24, 0.20);
+          --crimson: #8b1a1a;
+          --muted: #6b6b82;
+          --text: #d4d4e0;
+          --white: #f0f0f5;
+          --radius: 8px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ── HEADER / NAV ────────────────────────────────────── */
+        header {
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 5%;
+          height: 72px;
+          background: rgba(0, 0, 0, 0.92);
+          backdrop-filter: blur(12px);
+          border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+        }
+
+        .logo img {
+          height: 58px;
+          width: auto;
+          display: block;
+        }
+
+        header nav a {
+          color: var(--text);
+          text-decoration: none;
+          font-size: .85rem;
+          letter-spacing: .08em;
+          text-transform: uppercase;
+          transition: color .2s;
+        }
+
+        header nav a:hover {
+          color: var(--gold);
+        }
+
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          gap: .5rem;
+          padding: .65rem 1.4rem;
+          border-radius: var(--radius);
+          font-family: 'Rajdhani', sans-serif;
+          font-weight: 700;
+          font-size: .9rem;
+          letter-spacing: .1em;
+          text-transform: uppercase;
+          text-decoration: none;
+          cursor: pointer;
+          border: none;
+          transition: transform .2s, box-shadow .2s;
+        }
+
+        .btn:hover {
+          transform: translateY(-2px);
+        }
+
+        .btn-gold {
+          background: var(--gold);
+          color: var(--ink);
+          box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        .btn-gold:hover {
+          box-shadow: 0 0 32px rgba(245, 197, 24, .45);
+        }
+
+        .glow-gold:hover {
+            box-shadow: 0 0 25px rgba(245, 197, 24, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-brand-dark text-gray-100 font-inter antialiased">
+
+    <!-- ── HEADER ──────────────────────────────────────── -->
+    <header>
+      <a href="index.html" class="logo">
+        <img
+          src="imgs/logo/logo_menu.png"
+          alt="Comunidade Starter">
+      </a>
+      <nav class="hidden md:flex items-center">
+        <a href="index.html#sobre">Sobre</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="index.html#clas">Clãs</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="index.html#estrategias">Estratégias</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="contas a venda.html" style="color: var(--gold);">Contas à Venda</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="index.html#entrar" class="btn btn-gold" style="padding:.5rem 1.1rem;font-size:.82rem;">Entrar na Comunidade</a>
+      </nav>
+      <div class="flex items-center space-x-4">
+        <div class="flex bg-neutral-900 border border-neutral-800 rounded-full p-1 text-sm font-semibold">
+            <button id="btn-brl"
+                class="px-3 py-1 rounded-full bg-brand-gold text-brand-dark transition-all">R$</button>
+            <button id="btn-usd"
+                class="px-3 py-1 rounded-full text-gray-400 hover:text-white transition-all">US$</button>
+        </div>
+        <!-- Mobile hamburger button -->
+        <button id="hamburgerBtn"
+            class="md:hidden text-gray-400 hover:text-white focus:outline-none p-2 rounded-lg border border-neutral-700">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile menu matching index styles -->
+    <div id="mobileMenu"
+        class="hidden md:hidden bg-brand-card border-b border-brand-border px-6 pt-4 pb-6 space-y-4">
+        <a href="index.html#sobre" id="menu-link-sobre"
+            class="block text-gray-300 hover:text-brand-gold font-semibold py-2 border-b border-neutral-900">Sobre</a>
+        <a href="index.html#clas" id="menu-link-clas"
+            class="block text-gray-300 hover:text-brand-gold font-semibold py-2 border-b border-neutral-900">Clãs</a>
+        <a href="index.html#estrategias" id="menu-link-estrategias"
+            class="block text-gray-300 hover:text-brand-gold font-semibold py-2 border-b border-neutral-900">Estratégias</a>
+        <a href="contas a venda.html" id="menu-link-catalogo"
+            class="block text-brand-gold font-semibold py-2 border-b border-neutral-900">Contas à Venda</a>
+
+        <div class="flex items-center justify-between pt-2">
+            <span class="text-xs text-gray-400 uppercase tracking-widest font-semibold">Moeda:</span>
+            <div class="flex bg-neutral-900 border border-neutral-800 rounded-full p-1 text-xs font-semibold">
+                <button id="btn-brl-mob"
+                    class="px-4 py-1.5 rounded-full bg-brand-gold text-brand-dark transition-all">R$</button>
+                <button id="btn-usd-mob"
+                    class="px-4 py-1.5 rounded-full text-gray-400 hover:text-white transition-all">US$</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── HERO BANNER ───────────────────────────────────── -->
+    <section class="relative w-full flex items-center justify-center text-center h-[180px] sm:h-[260px] md:h-[320px] lg:h-[375px] overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <video autoplay loop muted playsinline class="w-full h-full object-cover filter brightness-[0.35] saturate-[0.8]">
+                <source src="imgs/video/hero.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-brand-dark/95"></div>
+        </div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <h1
+                class="font-cinzel font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-white leading-tight tracking-wide drop-shadow-[0_4px_12px_rgba(0,0,0,0.95)]">
+                Catálogo de Contas<br>
+                <span
+                    class="bg-gradient-to-r from-brand-gold to-red-500 bg-clip-text text-transparent">Raid
+                    Shadow Legends</span>
+            </h1>
+        </div>
+    </section>
+
+    <section class="bg-gradient-to-b from-brand-dark to-neutral-950 py-8 border-b border-neutral-900">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+            <div
+                class="flex flex-col md:flex-row items-center justify-between gap-6 bg-brand-card/60 p-5 rounded-2xl border border-neutral-800/60 backdrop-blur-sm">
+                <div class="flex items-center space-x-3">
+                    <span class="flex h-3 w-3 relative">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                    <div>
+                        <p class="text-sm font-bold text-white">Estoque Exclusivo</p>
+                        <p class="text-xs text-gray-400">Contas validadas com entrega rápida</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                    <a href="#catalogo"
+                        class="w-full sm:w-auto bg-brand-gold text-brand-dark font-extrabold px-8 py-3.5 rounded-xl hover:scale-105 transition-transform duration-200 text-center text-sm shadow-lg shadow-brand-gold/20">
+                        <i class="fas fa-th-list mr-2"></i>Ver Contas
+                    </a>
+                    <a href="#faq"
+                        class="w-full sm:w-auto bg-black/40 hover:bg-neutral-900 border border-neutral-800 text-gray-300 font-bold px-6 py-3.5 rounded-xl text-center text-sm transition-all">
+                        Como Funciona?
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto text-center">
+                <div class="bg-neutral-900/40 border border-neutral-800/40 p-2.5 rounded-xl">
+                    <p class="text-lg font-black text-brand-gold font-cinzel">100%</p>
+                    <p class="text-[9px] uppercase tracking-widest text-gray-500 mt-0.5">Seguro</p>
+                </div>
+                <div class="bg-neutral-900/40 border border-neutral-800/40 p-2.5 rounded-xl">
+                    <p class="text-lg font-black text-brand-gold font-cinzel">&lt; 15 min</p>
+                    <p class="text-[9px] uppercase tracking-widest text-gray-500 mt-0.5">Envio Rápido</p>
+                </div>
+                <div class="bg-neutral-900/40 border border-neutral-800/40 p-2.5 rounded-xl">
+                    <p class="text-lg font-black text-brand-gold font-cinzel">+100</p>
+                    <p class="text-[9px] uppercase tracking-widest text-gray-500 mt-0.5">Vendas</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="catalogo" class="py-16 bg-brand-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 class="font-cinzel font-black text-2xl sm:text-3xl text-white tracking-wider">ESTOQUE ATUALIZADO</h2>
+                <div class="h-1 w-20 bg-brand-gold mx-auto my-3 rounded-full"></div>
+                <p class="text-gray-400 text-sm">Contas premium e exclusivas com envio imediato. Toque na conta
+                    pretendida para fechar negócio diretamente através do WhatsApp.</p>
+            </div>
+
+            <!-- Seletor de Abas (Estoque Oficial / Vendedores Parceiros) -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 max-w-xl mx-auto">
+                <button id="tab-propria" class="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold font-cinzel text-xs tracking-wider transition-all duration-300 border border-brand-gold/40 bg-brand-gold text-brand-dark shadow-lg shadow-brand-gold/15 hover:scale-105">
+                    Estoque Oficial <span id="count-propria" class="ml-1.5 text-[10px] bg-black/35 px-2 py-0.5 rounded-full text-brand-gold font-sans font-semibold">...</span>
+                </button>
+                <button id="tab-parceiros" class="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold font-cinzel text-xs tracking-wider transition-all duration-300 border border-neutral-800 bg-neutral-900/60 text-gray-400 hover:text-white hover:border-neutral-700 hover:scale-105">
+                    Contas de Parceiros <span id="count-parceiros" class="ml-1.5 text-[10px] bg-black/35 px-2 py-0.5 rounded-full text-gray-400 font-sans font-semibold">...</span>
+                </button>
+                <button id="tab-vendidas" class="w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold font-cinzel text-xs tracking-wider transition-all duration-300 border border-neutral-800 bg-neutral-900/60 text-gray-400 hover:text-white hover:border-neutral-700 hover:scale-105">
+                    Vendidas <span id="count-vendidas" class="ml-1.5 text-[10px] bg-black/35 px-2 py-0.5 rounded-full text-gray-400 font-sans font-semibold">...</span>
+                </button>
+            </div>
+
+            <div id="loading" class="text-center py-12">
+                <i class="fas fa-spinner animate-spin text-brand-gold text-4xl mb-4"></i>
+                <p class="text-gray-400">A carregar catálogo em tempo real...</p>
+            </div>
+
+            <div id="accountsContainer" class="grid md:grid-cols-2 gap-8 hidden">
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-16 bg-brand-dark border-t border-brand-border">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-cinzel font-black text-2xl text-white tracking-wider">Perguntas Frequentes</h2>
+                <div class="h-1 w-16 bg-brand-gold mx-auto my-3 rounded-full"></div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-brand-card border border-brand-border/60 rounded-xl overflow-hidden transition-colors">
+                    <button
+                        class="faq-btn w-full flex items-center justify-between p-5 font-semibold text-left text-white hover:bg-neutral-900 transition-colors"
+                        data-index="1">
+                        <span class="text-sm sm:text-base">Como é feita a entrega da conta?</span>
+                        <i class="faq-icon fas fa-chevron-down text-brand-gold transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-ans max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div
+                            class="p-5 border-t border-brand-border/60 text-xs sm:text-sm text-gray-400 leading-relaxed bg-neutral-950/45">
+                            A entrega é feita de forma prática através do WhatsApp. Enviamos as credenciais necessárias
+                            (Plarium ID ou e-mail atual da conta e palavra-passe). Prestamos suporte passo a passo para
+                            a vinculação do seu próprio e-mail e alteração da palavra-passe para garantir segurança total.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-card border border-brand-border/60 rounded-xl overflow-hidden transition-colors">
+                    <button
+                        class="faq-btn w-full flex items-center justify-between p-5 font-semibold text-left text-white hover:bg-neutral-900 transition-colors"
+                        data-index="2">
+                        <span class="text-sm sm:text-base">Quais são os métodos de pagamento aceitos?</span>
+                        <i class="faq-icon fas fa-chevron-down text-brand-gold transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-ans max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div
+                            class="p-5 border-t border-brand-border/60 text-xs sm:text-sm text-gray-400 leading-relaxed bg-neutral-950/45">
+                            Aceitamos pagamentos via <strong>Pix</strong> (para compradores brasileiros),
+                            <strong>PayPal</strong>, <strong>Wise</strong> ou <strong>Criptomoedas</strong>
+                            para transações internacionais.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-brand-card border border-brand-border/60 rounded-xl overflow-hidden transition-colors">
+                    <button
+                        class="faq-btn w-full flex items-center justify-between p-5 font-semibold text-left text-white hover:bg-neutral-900 transition-colors"
+                        data-index="3">
+                        <span class="text-sm sm:text-base">Como sei que posso confiar?</span>
+                        <i class="faq-icon fas fa-chevron-down text-brand-gold transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-ans max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+                        <div
+                            class="p-5 border-t border-brand-border/60 text-xs sm:text-sm text-gray-400 leading-relaxed bg-neutral-950/45">
+                            A Comunidade Starter possuí diversas referências em vendas de contas pelos grupos de Raid BR
+                            através do seu criador Sergio Galdino. Todas as contas são validadas antes da venda e oferecemos suporte total pós-compra.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <a href="https://api.whatsapp.com/send?phone=5561993935402&text=Olá! Gostaria de consultar contas disponíveis para o Raid no catálogo da Comunidade Starter."
+        target="_blank"
+        class="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200 glow-gold"
+        title="Contactar via WhatsApp">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <footer class="bg-neutral-950 border-t border-neutral-900 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div
+                class="flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+                <div class="flex items-center space-x-2">
+                    <span class="font-cinzel font-bold text-sm tracking-wider text-brand-gold">COMUNIDADE STARTER SHOP</span>
+                    <span>&copy; 2026. Todos os direitos reservados.</span>
+                </div>
+                <div>
+                    <span class="text-gray-400 text-[10px]">Raid: Shadow Legends é uma marca registada da Plarium Global Ltd.</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        console.log("Comunidade Starter Shop script block executing...");
+        let rawAccountsData = [];
+        let accountsData = []; // Estoque filtrado exibido atualmente
+        let activeTab = 'propria'; // 'propria' ou 'parceiro'
+        let currentCurrency = 'BRL';
+
+        // ── VARIÁVEIS DO MODAL E LIGHTBOX ──────────────────────────────
+        let currentModalAccount = null;
+        let images = [];
+        let currentImageIndex = 0;
+        let scale = 1, isDragging = false;
+        let startX, startY, translateX = 0, translateY = 0;
+        let initialDistance = null, initialScale = 1;
+
+        // Função para obter parâmetros da URL (Deep-linking)
+        function getUrlParameter(name) {
+            const results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            return results ? decodeURIComponent(results[1]) : null;
+        }
+
+        // Carregar dados do Google Sheets
+        async function fetchSheetData() {
+            console.log("fetchSheetData started. URL:", googleSheetCsvUrl);
+            try {
+                const response = await fetch(googleSheetCsvUrl);
+                console.log("Fetch response received. Status:", response.status);
+                const csvText = await response.text();
+                console.log("CSV text length:", csvText.length);
+
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function (results) {
+                        console.log("Papa.parse complete. Data length:", results.data ? results.data.length : 0);
+                        // Mapeia todas as linhas usando a função centralizada do api.js
+                        rawAccountsData = results.data.map(mapRow);
+                        console.log("Mapped rawAccountsData. Length:", rawAccountsData.length);
+                        
+                        // Atualiza os contadores das abas
+                        updateTabCounters();
+                        console.log("Tab counters updated.");
+
+                        // Oculta o loading e exibe os cartões
+                        document.getElementById('loading').classList.add('hidden');
+                        document.getElementById('accountsContainer').classList.remove('hidden');
+                        
+                        // Checar se há deep-linking por ID na URL
+                        const urlId = getUrlParameter('id');
+                        console.log("URL ID parameter:", urlId);
+                        if (urlId) {
+                            const targetAcc = rawAccountsData.find(a => a.id === urlId);
+                            if (targetAcc) {
+                                if (targetAcc.status === 'VENDIDO') {
+                                    activeTab = 'vendida';
+                                } else if (targetAcc.tipo === 'parceiro') {
+                                    activeTab = 'parceiro';
+                                }
+                            }
+                        }
+
+                        // Aplica o filtro inicial e renderiza
+                        console.log("Switching tab to:", activeTab);
+                        switchTab(activeTab);
+
+                        // Abre o modal se tiver id na URL
+                        if (urlId) {
+                            console.log("Opening details modal for URL ID:", urlId);
+                            openDetailsModal(urlId);
+                        }
+                    },
+                    error: function (err) {
+                        console.error("Erro ao processar o CSV: ", err);
+                        fallbackToDefault();
+                    }
+                });
+            } catch (error) {
+                console.error("Erro ao buscar planilha do Google Sheets: ", error);
+                fallbackToDefault();
+            }
+        }
+
+        function fallbackToDefault() {
+            rawAccountsData = [
+                {
+                    id: "001",
+                    title: "Conta Void Premium",
+                    power: "7.1M",
+                    tagline: "Embrys, Mikage, Yumeko, Arbitra 6★, Leonardo, Nekhret, 2x Cardiel, Rakka, Titus e +++",
+                    image: "https://simp6.cuckcapital.cr/images4/imagef1c3452b07898ab2.png",
+                    priceBrl: 1000,
+                    priceUsd: 200,
+                    label: "Cód: 001",
+                    status: "DISPONÍVEL",
+                    tipo: "propria"
+                }
+            ];
+            updateTabCounters();
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('accountsContainer').classList.remove('hidden');
+            switchTab('propria');
+        }
+
+        function updateTabCounters() {
+            const countPropria = rawAccountsData.filter(acc => (acc.tipo === 'propria' || acc.tipo === '') && acc.status !== 'VENDIDO').length;
+            const countParceiros = rawAccountsData.filter(acc => acc.tipo === 'parceiro' && acc.status !== 'VENDIDO').length;
+            const countVendidas = rawAccountsData.filter(acc => acc.status === 'VENDIDO').length;
+
+            document.getElementById('count-propria').textContent = countPropria;
+            document.getElementById('count-parceiros').textContent = countParceiros;
+            document.getElementById('count-vendidas').textContent = countVendidas;
+        }
+
+        // Função para alterar abas
+        function switchTab(tab) {
+            activeTab = tab;
+            const tabPropria = document.getElementById('tab-propria');
+            const tabParceiros = document.getElementById('tab-parceiros');
+            const tabVendidas = document.getElementById('tab-vendidas');
+
+            const activeClasses = ['bg-brand-gold', 'text-brand-dark', 'border-brand-gold/40', 'shadow-lg', 'shadow-brand-gold/15'];
+            const inactiveClasses = ['bg-neutral-900/60', 'text-gray-400', 'border-neutral-800', 'hover:text-white', 'hover:border-neutral-700'];
+
+            [tabPropria, tabParceiros, tabVendidas].forEach(btn => {
+                if (btn) {
+                    btn.className = "w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold font-cinzel text-xs tracking-wider transition-all duration-300 border hover:scale-105";
+                    btn.classList.add(...inactiveClasses);
+                }
+            });
+
+            if (tab === 'propria') {
+                if (tabPropria) {
+                    tabPropria.classList.remove(...inactiveClasses);
+                    tabPropria.classList.add(...activeClasses);
+                }
+                accountsData = rawAccountsData.filter(acc => (acc.tipo === 'propria' || acc.tipo === '') && acc.status !== 'VENDIDO');
+            } else if (tab === 'parceiro') {
+                if (tabParceiros) {
+                    tabParceiros.classList.remove(...inactiveClasses);
+                    tabParceiros.classList.add(...activeClasses);
+                }
+                accountsData = rawAccountsData.filter(acc => acc.tipo === 'parceiro' && acc.status !== 'VENDIDO');
+            } else if (tab === 'vendida') {
+                if (tabVendidas) {
+                    tabVendidas.classList.remove(...inactiveClasses);
+                    tabVendidas.classList.add(...activeClasses);
+                }
+                accountsData = rawAccountsData.filter(acc => acc.status === 'VENDIDO');
+            }
+
+            renderAccounts();
+        }
+
+        // Menu Mobile Toggle
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (hamburgerBtn && mobileMenu) {
+            hamburgerBtn.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        ['menu-link-sobre', 'menu-link-clas', 'menu-link-estrategias', 'menu-link-catalogo'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('click', () => {
+                    if (mobileMenu) mobileMenu.classList.add('hidden');
+                });
+            }
+        });
+
+        // Seletor de Moeda
+        function setCurrency(curr) {
+            currentCurrency = curr;
+
+            const btnBrl = document.getElementById('btn-brl');
+            const btnUsd = document.getElementById('btn-usd');
+            const btnBrlMob = document.getElementById('btn-brl-mob');
+            const btnUsdMob = document.getElementById('btn-usd-mob');
+
+            const active = ['bg-brand-gold', 'text-brand-dark'];
+            const inactive = ['text-gray-400', 'hover:text-white'];
+
+            if (curr === 'BRL') {
+                if (btnBrl) { btnBrl.classList.add(...active); btnBrl.classList.remove(...inactive); }
+                if (btnUsd) { btnUsd.classList.remove(...active); btnUsd.classList.add(...inactive); }
+                if (btnBrlMob) { btnBrlMob.classList.add(...active); btnBrlMob.classList.remove(...inactive); }
+                if (btnUsdMob) { btnUsdMob.classList.remove(...active); btnUsdMob.classList.add(...inactive); }
+            } else {
+                if (btnUsd) { btnUsd.classList.add(...active); btnUsd.classList.remove(...inactive); }
+                if (btnBrl) { btnBrl.classList.remove(...active); btnBrl.classList.add(...inactive); }
+                if (btnUsdMob) { btnUsdMob.classList.add(...active); btnUsdMob.classList.remove(...inactive); }
+                if (btnBrlMob) { btnBrlMob.classList.remove(...active); btnBrlMob.classList.add(...inactive); }
+            }
+
+            renderAccounts();
+        }
+
+        document.getElementById('btn-brl').addEventListener('click', () => setCurrency('BRL'));
+        document.getElementById('btn-usd').addEventListener('click', () => setCurrency('USD'));
+        document.getElementById('btn-brl-mob').addEventListener('click', () => setCurrency('BRL'));
+        document.getElementById('btn-usd-mob').addEventListener('click', () => setCurrency('USD'));
+
+        // Renderização dos Cartões
+        function renderAccounts() {
+            const container = document.getElementById('accountsContainer');
+            container.innerHTML = '';
+
+            accountsData.forEach(acc => {
+                const priceFormatted = currentCurrency === 'BRL'
+                    ? `R$ ${acc.priceBrl.toLocaleString('pt-BR')}`
+                    : `US$ ${acc.priceUsd.toLocaleString('en-US')}`;
+
+                const printsLink = `javascript:openDetailsModal('${acc.id}')`;
+
+                // Determina o número de WhatsApp e nome do vendedor
+                let numWhats = whatsappPadrao;
+                let nomeVendedor = vendedorPadrao;
+
+                if (acc.tipo === 'parceiro') {
+                    if (acc.whatsapp && acc.whatsapp.trim() !== '') {
+                        numWhats = acc.whatsapp.replace(/\D/g, "");
+                        if (numWhats.length === 11 || numWhats.length === 10) {
+                            numWhats = "55" + numWhats;
+                        }
+                    }
+                    if (acc.vendedor && acc.vendedor.trim() !== '') {
+                        nomeVendedor = acc.vendedor.trim();
+                    }
+                }
+
+                const encodedMessage = encodeURIComponent(
+                    acc.tipo === 'parceiro'
+                        ? `Olá! Vi o anúncio da conta [Código ${acc.id}] na página de parceiros da Comunidade Starter e gostaria de negociar.`
+                        : `Olá! Gostaria de fechar negócio na conta [Código ${acc.id}] - ${acc.title} (${acc.tagline}) no valor de ${priceFormatted} no catálogo da Comunidade Starter. Ainda está disponível?`
+                );
+                const whatsappLink = `https://api.whatsapp.com/send?phone=${numWhats}&text=${encodedMessage}`;
+
+                const isSold = acc.status === 'VENDIDO';
+                const statusBadge = isSold
+                    ? `<span class="bg-red-500/15 border border-red-500/30 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded">VENDIDO</span>`
+                    : `<span class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded">DISPONÍVEL</span>`;
+
+                const clickAction = isSold ? '#' : whatsappLink;
+
+                // Selo do vendedor parceiro se aplicável
+                const sellerBadge = acc.tipo === 'parceiro' && acc.vendedor
+                    ? `<span class="absolute top-3 left-3 bg-black/60 border border-neutral-700 text-gray-300 text-[10px] font-semibold px-3 py-1 rounded-full shadow-lg z-20 backdrop-blur-sm">
+                           <i class="fas fa-user text-brand-orange mr-1"></i>Vendedor: ${acc.vendedor}
+                       </span>`
+                    : '';
+
+                const card = `
+                    <div class="bg-brand-card border border-brand-border/60 rounded-2xl overflow-hidden shadow-xl hover:scale-[1.02] hover:border-brand-gold/60 transition-all duration-300 flex flex-col justify-between group ${isSold ? 'opacity-65 grayscale' : ''}">
+                        
+                        <div class="relative h-72 flex items-center justify-center overflow-hidden border-b border-brand-border bg-black">
+                            <img src="${acc.image}" alt="${acc.title}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-transparent z-10"></div>
+                            
+                            ${(acc.label === 'Sim' || acc.label === 'Promoção')
+                                ? `<img src="imgs/promo.png" alt="Promoção" class="absolute top-3 right-3 w-36 z-20 drop-shadow-2xl hover:scale-110 transition-transform duration-300">`
+                                : ''
+                            }
+                            ${sellerBadge}
+                        </div>
+
+                        <div class="p-6 space-y-5 flex-1 flex flex-col justify-between bg-[#0e0e11]">
+                            <div class="space-y-4">
+                                <div class="space-y-1">
+                                    <h3 class="font-cinzel text-brand-gold font-black text-lg tracking-wide uppercase transition-colors group-hover:text-white">${acc.title}</h3>
+                                    <p class="text-gray-400 text-xs font-semibold">${acc.tagline}</p>
+                                </div>
+
+                                <div class="flex items-center justify-between text-xs bg-black/60 p-2.5 rounded-lg border border-brand-border/50">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fas fa-chart-line text-brand-gold"></i>
+                                        <span class="text-gray-400">Poder de Conta:</span>
+                                    </div>
+                                    <span class="font-bold text-white font-mono">${acc.power}</span>
+                                </div>
+
+                                <a href="${printsLink}" 
+                                   class="w-full inline-flex items-center justify-center space-x-2 bg-neutral-900 hover:bg-neutral-800 border border-brand-border hover:border-brand-gold/50 text-gray-300 hover:text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm">
+                                    <i class="fas fa-images text-brand-gold"></i>
+                                    <span>Veja todos os prints</span>
+                                </a>
+                            </div>
+
+                            <div class="pt-5 border-t border-brand-border mt-2">
+                                <div class="flex items-end justify-between mb-4">
+                                    <div>
+                                        <p class="text-[9px] text-gray-500 uppercase tracking-widest font-semibold">Valor do Investimento</p>
+                                        <p class="text-2xl font-black text-white font-cinzel mt-0.5">${priceFormatted}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        ${statusBadge}
+                                    </div>
+                                </div>
+
+                                <a href="${clickAction}" 
+                                   target="${isSold ? '' : '_blank'}"
+                                   class="w-full inline-flex items-center justify-center space-x-2 bg-gradient-to-r ${isSold ? 'from-neutral-700 to-neutral-800 cursor-not-allowed text-white' : 'from-brand-gold to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-brand-dark'} font-bold py-3.5 px-4 rounded-xl transition-all shadow-md active:scale-95 duration-200">
+                                    <i class="${isSold ? 'fas fa-ban' : 'fab fa-whatsapp'} text-base"></i>
+                                    <span>${isSold ? 'Vendida' : (acc.tipo === 'parceiro' ? `Comprar com ${nomeVendedor}` : 'Comprar via WhatsApp')}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        // FAQ Eventos
+        document.querySelectorAll('.faq-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const ans = this.nextElementSibling;
+                const icon = this.querySelector('.faq-icon');
+                const isOpen = ans.style.maxHeight && ans.style.maxHeight !== '0px';
+
+                document.querySelectorAll('.faq-ans').forEach(function (a) { a.style.maxHeight = '0px'; });
+                document.querySelectorAll('.faq-icon').forEach(function (i) { i.style.transform = 'rotate(0deg)'; });
+
+                if (!isOpen) {
+                    ans.style.maxHeight = ans.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Eventos das abas do catálogo
+        document.getElementById('tab-propria').addEventListener('click', () => switchTab('propria'));
+        document.getElementById('tab-parceiros').addEventListener('click', () => switchTab('parceiro'));
+        document.getElementById('tab-vendidas').addEventListener('click', () => switchTab('vendida'));
+
+        // Rolagem e ativação da aba de parceiros ao clicar nos links
+        const handleParceirosClick = (e) => {
+            e.preventDefault();
+            switchTab('parceiro');
+            document.getElementById('catalogo').scrollIntoView({ behavior: 'smooth' });
+            mobileMenu.classList.add('hidden');
+        };
+
+        const navParceiros = document.getElementById('nav-parceiros');
+        if (navParceiros) navParceiros.addEventListener('click', handleParceirosClick);
+
+        const menuLinkParceiros = document.getElementById('menu-link-parceiros');
+        if (menuLinkParceiros) menuLinkParceiros.addEventListener('click', handleParceirosClick);
+
+
+
+        // ── LÓGICA DE ABRIR E FECHAR O MODAL DE DETALHES ────────────────
+        function openDetailsModal(id) {
+            const acc = rawAccountsData.find(a => a.id === id);
+            if (!acc) return;
+
+            currentModalAccount = acc;
+            images = acc.prints || [];
+            currentImageIndex = 0;
+
+            // Atualiza dados no Modal
+            document.getElementById('modalCodeHeader').textContent = `Código: ${acc.id}`;
+            document.getElementById('modalTitle').textContent = acc.title;
+
+            // Formatação de Preço
+            const priceFormatted = currentCurrency === 'BRL'
+                ? `R$ ${acc.priceBrl.toLocaleString('pt-BR')}`
+                : `US$ ${acc.priceUsd.toLocaleString('en-US')}`;
+            document.getElementById('modalPriceLabel').textContent = priceFormatted;
+
+            // Status Badge do Modal
+            const isSold = acc.status === 'VENDIDO';
+            const badge = document.getElementById('modalAvailabilityBadge');
+            const ctaBtn = document.getElementById('modalBuyCtaBtn');
+
+            if (isSold) {
+                badge.className = "bg-red-500/15 border border-red-500/30 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded";
+                badge.textContent = "VENDIDO";
+                ctaBtn.className = "w-full inline-flex items-center justify-center space-x-2 bg-neutral-700 text-white font-bold py-4 px-4 rounded-xl cursor-not-allowed";
+                ctaBtn.innerHTML = `<i class="fas fa-ban"></i> <span>Vendida</span>`;
+                ctaBtn.href = "#";
+            } else {
+                badge.className = "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded";
+                badge.textContent = "DISPONÍVEL";
+                
+                // Lógica de Direcionamento do WhatsApp do modal
+                let numWhats = whatsappPadrao;
+                let nomeVendedor = vendedorPadrao;
+
+                if (acc.tipo === 'parceiro') {
+                    if (acc.whatsapp && acc.whatsapp.trim() !== "") {
+                        numWhats = acc.whatsapp.replace(/\D/g, "");
+                        if (numWhats.length === 11 || numWhats.length === 10) {
+                            numWhats = "55" + numWhats;
+                        }
+                    }
+                    if (acc.vendedor && acc.vendedor.trim() !== "") {
+                        nomeVendedor = acc.vendedor.trim();
+                    }
+                }
+
+                const msg = encodeURIComponent(
+                    acc.tipo === 'parceiro'
+                        ? `Olá! Vi o anúncio da conta [Código ${acc.id}] na página de parceiros da Comunidade Starter e gostaria de negociar.`
+                        : `Olá! Gostaria de fechar negócio na conta [Código ${acc.id}] - ${acc.title} (${acc.tagline}) no valor de ${priceFormatted} no catálogo da Comunidade Starter. Ainda está disponível?`
+                );
+                ctaBtn.className = "w-full inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-brand-gold to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-brand-dark font-bold py-4 px-4 rounded-xl transition-all shadow-md active:scale-95 duration-200";
+                ctaBtn.innerHTML = `<i class="fab fa-whatsapp text-lg"></i> <span>${acc.tipo === 'parceiro' ? 'Comprar com ' + nomeVendedor : 'Comprar via WhatsApp'}</span>`;
+                ctaBtn.href = `https://api.whatsapp.com/send?phone=${numWhats}&text=${msg}`;
+            }
+
+            // Pills de especificações
+            const pills = [
+                { label: 'E-mail',     value: acc.email_status,  color: 'text-emerald-400' },
+                { label: 'Vínculos',    value: acc.links_status,   color: 'text-emerald-400' },
+                { label: 'Promo Code',  value: acc.promo_code,     color: 'text-emerald-400' },
+                { label: 'Nível',       value: acc.level,          color: 'text-brand-gold'  },
+            ];
+            if (acc.vendedor && acc.tipo === 'parceiro') {
+                pills.push({ label: 'Vendedor', value: acc.vendedor, color: 'text-orange-400' });
+            }
+
+            const pillsArea = document.getElementById('modalStatusPillsArea');
+            pillsArea.innerHTML = pills
+                .filter(p => p.value)
+                .map(p => `
+                    <div class="bg-white/5 border border-neutral-800/60 p-2.5 rounded-lg">
+                        <p class="text-[8px] text-gray-500 uppercase tracking-widest font-bold">${p.label}</p>
+                        <p class="${p.color} text-xs font-bold mt-1">${p.value}</p>
+                    </div>`)
+                .join('');
+
+            // Seções de campeões e recursos
+            const detailsArea = document.getElementById('modalDetailsSections');
+            const heroSections = [
+                { title: 'Heróis Míticos',        icon: 'fa-star',  color: 'text-red-500',  data: acc.miticos },
+                { title: 'Lendários Principais',   icon: 'fa-gem',   color: 'text-orange-500', data: acc.principais_lendarios },
+                { title: 'Lendários Destaque',     icon: 'fa-crown', color: 'text-yellow-500', data: acc.outros_lendarios },
+            ];
+            detailsArea.innerHTML = heroSections
+                .filter(s => s.data.length > 0)
+                .map(s => `
+                    <div class="space-y-2 border-t border-neutral-800 pt-4">
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest ${s.color} flex items-center space-x-1.5">
+                            <i class="fas ${s.icon}"></i><span>${s.title}</span>
+                        </h4>
+                        <ul class="space-y-1.5 pl-1">
+                            ${s.data.map(item => `
+                                <li class="flex items-start space-x-2 text-xs text-gray-300">
+                                    <span class="text-brand-orange select-none">•</span>
+                                    <span class="leading-relaxed">${item}</span>
+                                </li>`).join('')}
+                        </ul>
+                    </div>`)
+                .join('');
+
+            if (acc.recursos) {
+                detailsArea.innerHTML += `
+                    <div class="space-y-2 border-t border-neutral-800 pt-4">
+                        <h4 class="text-[10px] font-bold uppercase tracking-widest text-sky-400 flex items-center space-x-1.5">
+                            <i class="fas fa-boxes-stacked"></i><span>Recursos & Itens</span>
+                        </h4>
+                        <p class="text-xs text-gray-300 leading-relaxed whitespace-pre-line">${acc.recursos}</p>
+                    </div>`;
+            }
+
+            // Grade de prints
+            const grid = document.getElementById('modalGalleryGrid');
+            grid.innerHTML = '';
+
+            if (images.length > 0) {
+                images.forEach((imgUrl, idx) => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'thumb relative bg-[#111] rounded-xl overflow-hidden border border-neutral-900 group aspect-[16/10] cursor-pointer transition-all duration-200 hover:border-brand-orange hover:scale-105';
+                    thumb.innerHTML = `
+                        <img src="${imgUrl}" loading="lazy" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-expand text-white text-lg"></i>
+                        </div>
+                        <span class="absolute bottom-2 right-2 bg-black/75 text-[9px] font-mono font-bold text-gray-400 px-2 py-0.5 rounded">
+                            ${idx + 1} / ${images.length}
+                        </span>`;
+                    thumb.addEventListener('click', () => openLightbox(idx));
+                    grid.appendChild(thumb);
+                });
+            } else {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 text-sm py-12">Nenhum print adicional foi adicionado para esta conta.</p>`;
+            }
+
+            // Exibe o modal
+            const modal = document.getElementById('detailsModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+
+            // Atualiza a URL sem recarregar a página (Deep-linking)
+            history.pushState(null, '', `?id=${acc.id}`);
+        }
+
+        // Fechar Modal de Detalhes
+        function closeDetailsModal() {
+            const modal = document.getElementById('detailsModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+            currentModalAccount = null;
+
+            // Restaura URL original (remove o id da query)
+            history.pushState(null, '', window.location.pathname);
+            closeLightbox();
+        }
+
+        function init() {
+            // Inicializar variáveis do DOM que são declaradas após o script
+            lb = document.getElementById('lightbox');
+            lbImg = document.getElementById('lbImg');
+            lbWrap = document.getElementById('lbWrap');
+            lbCount = document.getElementById('lbCounter');
+
+            // Eventos do modal de detalhes
+            const modalClose = document.getElementById('modalClose');
+            if (modalClose) modalClose.addEventListener('click', closeDetailsModal);
+            
+            const detailsModal = document.getElementById('detailsModal');
+            if (detailsModal) {
+                detailsModal.addEventListener('click', e => {
+                    if (e.target === detailsModal) closeDetailsModal();
+                });
+            }
+
+            // Eventos do Lightbox
+            const lbClose = document.getElementById('lbClose');
+            if (lbClose) lbClose.addEventListener('click', closeLightbox);
+
+            const lbPrev = document.getElementById('lbPrev');
+            if (lbPrev) lbPrev.addEventListener('click', prevImage);
+
+            const lbNext = document.getElementById('lbNext');
+            if (lbNext) lbNext.addEventListener('click', nextImage);
+
+            const lbPrev2 = document.getElementById('lbPrev2');
+            if (lbPrev2) lbPrev2.addEventListener('click', prevImage);
+
+            const lbNext2 = document.getElementById('lbNext2');
+            if (lbNext2) lbNext2.addEventListener('click', nextImage);
+
+            if (lb) {
+                lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+                lb.addEventListener('touchstart', e => { if (e.touches.length === 1) touchStartX = e.changedTouches[0].clientX; });
+                lb.addEventListener('touchend', e => {
+                    if (scale > 1 || e.changedTouches.length !== 1) return;
+                    const diff = touchStartX - e.changedTouches[0].clientX;
+                    if (Math.abs(diff) > 50) diff > 0 ? nextImage() : prevImage();
+                });
+            }
+
+            if (lbWrap) {
+                lbWrap.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    let newScale = scale + (Math.sign(e.deltaY) * -0.15 * scale);
+                    scale = Math.min(5, Math.max(1, newScale));
+                    if (scale === 1) { translateX = 0; translateY = 0; }
+                    applyTransform();
+                }, { passive: false });
+
+                lbWrap.addEventListener('pointerdown', (e) => {
+                    if (scale > 1) { isDragging = true; lbWrap.classList.add('no-transition'); startX = e.clientX - translateX; startY = e.clientY - translateY; }
+                });
+
+                lbWrap.addEventListener('touchstart', (e) => {
+                    if (e.touches.length === 2) { e.preventDefault(); isDragging = false; initialDistance = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); initialScale = scale; }
+                }, { passive: false });
+
+                lbWrap.addEventListener('touchmove', (e) => {
+                    if (e.touches.length === 2) {
+                        e.preventDefault();
+                        const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                        scale = Math.min(5, Math.max(1, initialScale * (d / initialDistance)));
+                        if (scale === 1) { translateX = 0; translateY = 0; }
+                        applyTransform();
+                    }
+                }, { passive: false });
+            }
+
+            window.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                applyTransform();
+            });
+            window.addEventListener('pointerup', () => { isDragging = false; if (lbWrap) lbWrap.classList.remove('no-transition'); });
+
+            document.addEventListener('keydown', e => {
+                if (lb && lb.classList.contains('hidden')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') prevImage();
+                if (e.key === 'ArrowRight') nextImage();
+            });
+
+            // Chamar fetchSheetData imediatamente após carregar o DOM
+            fetchSheetData();
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // ── LIGHTBOX LOGIC ─────────────────────────────────────────────
+        let lb, lbImg, lbWrap, lbCount;
+
+        function openLightbox(i) {
+            currentImageIndex = i;
+            resetZoom();
+            updateLightbox();
+            if (lb) {
+                lb.classList.remove('hidden');
+                lb.classList.add('flex');
+            }
+        }
+        function closeLightbox() {
+            if (lb) {
+                lb.classList.add('hidden');
+                lb.classList.remove('flex');
+            }
+            resetZoom();
+        }
+        function updateLightbox() {
+            if (lbImg) lbImg.src = images[currentImageIndex];
+            if (lbCount) lbCount.textContent = `${currentImageIndex + 1} / ${images.length}`;
+        }
+        function prevImage() { currentImageIndex = (currentImageIndex - 1 + images.length) % images.length; resetZoom(); updateLightbox(); }
+        function nextImage() { currentImageIndex = (currentImageIndex + 1) % images.length; resetZoom(); updateLightbox(); }
+
+        function resetZoom() { scale = 1; translateX = 0; translateY = 0; applyTransform(); }
+        function applyTransform() { if (lbImg) lbImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`; }
+    </script>
+
+    <!-- MODAL DE DETALHES DA CONTA -->
+    <div id="detailsModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden items-start justify-center overflow-y-auto py-8 px-4">
+        <!-- Container do Modal -->
+        <div class="relative bg-brand-dark border border-brand-border w-full max-w-6xl rounded-3xl overflow-hidden shadow-2xl my-auto flex flex-col">
+            <!-- Botão de Fechar Modal -->
+            <button id="modalClose" class="absolute top-5 right-5 w-11 h-11 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-brand-gold hover:text-brand-dark hover:border-brand-gold/50 transition-colors z-30">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+
+            <!-- Cabeçalho do Modal -->
+            <div class="bg-gradient-to-br from-neutral-950 to-amber-950/20 p-6 sm:p-8 border-b border-brand-border">
+                <div class="flex items-center space-x-2.5 mb-3">
+                    <span class="bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-[10px] font-bold px-3 py-1 rounded-full shadow-lg">
+                        <i class="fas fa-id-card mr-1"></i> Ficha Técnica
+                    </span>
+                    <span id="modalCodeHeader" class="text-gray-500 text-xs font-mono">Cód: 000</span>
+                </div>
+                <h2 id="modalTitle" class="font-cinzel font-black text-xl sm:text-2xl lg:text-3xl text-white">CONTA DO...</h2>
+            </div>
+
+            <!-- Corpo do Modal -->
+            <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <!-- Coluna da Esquerda (Galeria de Prints) -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-[#0e0e11] border border-brand-border/60 p-5 sm:p-6 rounded-2xl">
+                        <div class="flex items-center space-x-2 mb-4">
+                            <i class="fas fa-images text-brand-gold"></i>
+                            <h4 class="font-cinzel text-brand-gold font-bold text-xs tracking-wider">GALERIA DE PRINTS</h4>
+                        </div>
+                        <div id="modalGalleryGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            <!-- Inserido dinamicamente via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna da Direita (Detalhes e Ficha Técnica) -->
+                <div class="space-y-6">
+                    <div class="bg-brand-card border border-brand-border/60 p-5 rounded-2xl space-y-6 shadow-xl">
+                        <!-- Especificações Rápidas (Pills) -->
+                        <div id="modalStatusPillsArea" class="grid grid-cols-2 gap-2 text-center">
+                            <!-- Inserido dinamicamente via JS -->
+                        </div>
+
+                        <!-- Seções de Campeões (Míticos, Lendários, Recursos) -->
+                        <div id="modalDetailsSections" class="space-y-6">
+                            <!-- Inserido dinamicamente via JS -->
+                        </div>
+
+                        <!-- Área de Preço e Compra -->
+                        <div class="bg-brand-gold/5 border border-brand-gold/25 p-4 rounded-xl flex items-center justify-between">
+                            <div>
+                                <p class="text-[9px] text-gray-500 uppercase tracking-widest font-bold">Investimento</p>
+                                <p id="modalPriceLabel" class="text-2xl font-black text-white font-cinzel mt-1">R$ 0</p>
+                            </div>
+                            <span id="modalAvailabilityBadge" class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded">DISPONÍVEL</span>
+                        </div>
+
+                        <!-- Botão de Compra -->
+                        <a id="modalBuyCtaBtn" href="#" target="_blank"
+                            class="w-full inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-brand-gold to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-brand-dark font-bold py-4 px-4 rounded-xl transition-all shadow-md active:scale-95 duration-200">
+                            <i class="fab fa-whatsapp text-lg"></i>
+                            <span>Comprar via WhatsApp</span>
+                        </a>
+
+                        <p class="text-[10px] text-gray-500 text-center leading-relaxed">
+                            Conta autenticada e gerida de forma segura.<br>Entrega rápida e acompanhamento total do processo de vinculação.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX DO MODAL -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-[60] hidden items-center justify-center p-4 backdrop-blur-md">
+        <button id="lbClose" class="fixed top-5 right-5 w-11 h-11 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center hover:bg-white/20 transition-colors z-[70]">
+            <i class="fas fa-times text-lg"></i>
+        </button>
+        <button id="lbPrev" class="fixed left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/5 border border-white/10 hover:border-brand-gold hover:bg-brand-gold/20 text-white flex items-center justify-center z-40 transition-colors">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button id="lbNext" class="fixed right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/5 border border-white/10 hover:border-brand-gold hover:bg-brand-gold/20 text-white flex items-center justify-center z-40 transition-colors">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="max-w-5xl w-full flex flex-col items-center space-y-4">
+            <div id="lbWrap" class="relative w-full rounded-2xl overflow-hidden border border-brand-border bg-black max-h-[75vh] flex items-center justify-center touch-action-none">
+                <img id="lbImg" src="" alt="Print em tamanho grande" class="max-h-[75vh] w-full object-contain cursor-grab active:cursor-grabbing">
+            </div>
+            <div class="flex items-center space-x-6 z-10">
+                <button id="lbPrev2" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 text-white flex items-center justify-center"><i class="fas fa-chevron-left"></i></button>
+                <span id="lbCounter" class="text-xs font-mono text-gray-400">1 / 1</span>
+                <button id="lbNext2" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/15 text-white flex items-center justify-center"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
